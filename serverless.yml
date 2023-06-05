@@ -10,66 +10,7 @@ provider:
   lambdaHashingVersion: 20201221
   region: us-east-1
   stage: dev
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - states:CreateStateMachine
-        - states:DeleteStateMachine
-        - states:DescribeStateMachine
-        - states:ListStateMachines
-        - states:StartExecution
-        - states:StopExecution
-      Resource: '*'
 
 functions:
-  processDataFunction:
-    handler: functions/processData.handler
   sendDataFunction:
     handler: functions/sendData.handler
-  stepLambdaFunction:
-    handler: functions/hello.handler
-    iamRoleStatements:
-      - Effect: Allow
-        Action:
-          - states:StartExecution
-        Resource: '*'
-
-stepFunctions:
-  stateMachines:
-    myExpressStateMachine:
-      name: "ExpressStateMachine"
-      type: EXPRESS
-      loggingConfig:
-        level: ALL
-        includeExecutionData: true
-        destinations:
-          - !GetAtt LogGroup.Arn
-      definition:
-        Comment: "git workflows test"
-        StartAt: ExtractData
-        States:
-          ExtractData: # state 1
-            Type: Task
-            Resource: arn:aws:states:::dynamodb:getItem
-            Parameters:
-              TableName: "ProductTable"
-              Key:
-                id.$: "$.queryStringParameters.id"
-            ResultPath: "$.myDynamodbRecord"
-            Next: ProcessData
-          ProcessData: # state 2
-            Type: Task
-            Resource:
-              Fn::GetAtt: [processDataFunction, Arn]
-            InputPath: "$"
-            Next: SendData
-          SendData: # state 3
-            Type: Task
-            Resource:
-              Fn::GetAtt: [sendDataFunction, Arn]
-            End: true
-
-resources:
-  Resources:
-    LogGroup:
-      Type: AWS::Logs::LogGroup
