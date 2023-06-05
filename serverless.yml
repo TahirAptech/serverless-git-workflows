@@ -1,7 +1,7 @@
 service: git-workflows
 frameworkVersion: '2 || 3'
 plugins:
-  - serverless-step-functions
+  - serverless-webpack
   - serverless-iam-roles-per-function
 provider:
   name: aws
@@ -14,3 +14,9 @@ provider:
 functions:
   sendDataFunction:
     handler: functions/sendData.handler
+
+custom:
+  webpack:
+   includeModules: true
+   webpackConfig: webpack.config.ts
+   packager: npm
