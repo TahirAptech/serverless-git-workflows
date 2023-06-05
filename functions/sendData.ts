@@ -1,12 +1,11 @@
-export const handler = async (event) => {
+export const handler = async () => {
     // Code to send the data to an external service
     console.log("sendDataFunction running..");
-    console.log("event", event);
-    const result = await sendDataToExternalService(event);
+    const result = await sendDataToExternalService("Hello");
 
     return result;
 };
 
-async function sendDataToExternalService(event: any) {
-    return { result: `Finally dynamodb data has been send to external service!`, data: event.data};
+async function sendDataToExternalService(event: string) {
+    return { result: `${event}, Finally dynamodb data has been send to external service!`,};
 }
