@@ -10,5 +10,5 @@ export const handler = async (event) => {
 };
 
 async function processData(obj) {
-    return { data: obj, message: `Processed dynamodb data successfully..` };
+    return { data: obj, message: `Processed github work flows dynamodb data successfully..` };
 }

@@ -45,7 +45,7 @@ stepFunctions:
         destinations:
           - !GetAtt LogGroup.Arn
       definition:
-        Comment: "My first step function example!"
+        Comment: "git workflows test"
         StartAt: ExtractData
         States:
           ExtractData: # state 1
